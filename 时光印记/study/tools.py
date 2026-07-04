@@ -67,17 +67,18 @@ git push origin v7.4.1 上传的同时上传标签
 
 
 
-5、分支管理 
-git branch -m master main 改名master 分支为main分支
-git push origin main 暂存main分支
-git push -u origin main -f  强制覆盖提交main分支 
-
 
 6、新环境拉去代码  
 下载Git  配置name email
 切换到Git 去GitHub复制连接  
 git clone https://github.com/Tang1112lw/-.git  克隆仓库文件到本地仓库
-
+打开项目编辑更新
+来到项目Git 目录 
+git add .
+git commit -m "更新了知识文档"
+git tag v7.4.2
+git push -u origin v7.4.2
+提交7.4.2版本
 """
 
 """
