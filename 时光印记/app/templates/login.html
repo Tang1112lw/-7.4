@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-5">
+        <div class="card">
+            <div class="card-header">
+                <span style="font-size:1.5rem;margin-right:8px;">🔐</span>登录时光印记
+            </div>
+            <div class="card-body p-4">
+                {% if registered %}
+                <div class = "alter alter-success" role ="alter">
+                    注册成功请登录 
+                </div>
+                {% endif %}
+
+                <form action="/login" method="post">
+                    <div class="mb-4">
+                        <label class="form-label">用户名</label>
+                        <input type="text" name="username" class="form-control" placeholder="请输入用户名" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label">密码</label>
+                        <input type="password" name="password" class="form-control" placeholder="请输入密码" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">登 录</button>
+                </form>
+                <div class="text-center mt-3">
+                    <span style="color:#8B5E3C;">还没有账号？</span>
+                    <a href="/register" style="color:#6B3A2A;font-weight:bold;text-decoration:none;">立即注册</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
