@@ -44,6 +44,7 @@ async def login(request: Request,username :str= Form(),password :str = Form(),se
         
     else:
         print("密码错误")
+        return RedirectResponse(url="/login?regester=0",status_code=302)
 
 @router.get("/login")
 async def login(request :Request,registered: str =None):

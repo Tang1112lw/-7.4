@@ -1,7 +1,7 @@
 
 """
 Git 搭配Github
-一、上传与拉取
+一、上传、拉取与版本控制
 
 1、下载git 配置信息
 winget install --id Git.Git -e --source winget 下载或更新Git
@@ -112,7 +112,7 @@ git add .
 git commit -m "更新了知识文档"
 git tag v7.4.2
 git push
-git push -u origin v7.4.2
+git push  origin v7.4.2
 
 7、已有文件更新
 git switch main 回到主分支 默认文件打开的时候为游离状态
@@ -125,5 +125,30 @@ git log 查看当前版本
 
 
 
+
+二、多人协作
+ # === 入职 ===
+ git clone https://github.com/Tang1112lw/-7.4.git
+ cd -7.4
+
+ # === 开发新功能 ===
+ git switch -c feature-导出Excel
+ # 改文件...
+ git add .
+ git commit -m "添加了导出Excel功能"
+ git push -u origin feature-导出Excel
+ # → 去 GitHub 提 PR
+
+ # === 审查通过后 ===
+ # → 在 GitHub 上点 Merge + Delete branch
+
+ # === 本地同步 ===
+ git switch main
+ git pull
+
+ # === 如果需要回退 ===
+ git log --oneline -5
+ git revert 复制的hash值
+ git push
 
 """
