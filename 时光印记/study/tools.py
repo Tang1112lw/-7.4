@@ -1,4 +1,107 @@
+f"""
+orm
+orm由
+异步引擎  连接数据库的配置
+会话工厂  生产session的工厂 目的是为设置为异步工厂以及规范会话等
+模型类    继承基类作为能被识别为数据库的类
+注入函数  一个能够将每次请求自动创建为session的函数 请求借宿自动关闭
+session  会话函数session 也是通过session间接增删改查数据库
 
+1.异步引擎engine
+导入创建会话引擎函数
+from sqlclchemy.ext.asyncio impotr async_creat_engine
+engine = async_creat_engine(
+url =mysql+aiomysql://tang:tang1314520@localhost:3306/timesprint, # 数据库+orm数据库驱动+账号+密码+地址+端口号+数据库（+可加指定格式）
+echo =True           #sql语句输出
+pool_size=5,         # 连接池大小，默认 5
+max_overflow=10,     # 连接池溢出上限
+pool_recycle=3600,   # 连接一小时后自动回收，防断开
+pool_pre_ping=True,  # 每次取连接前先测试是否有效
+ ))
+
+
+2.会话工厂
+会话工厂由异步会话引擎+异步会话类+异步会话工厂创建函数
+from sqlclchemy.ext.asyncio import async_sessionmaker,Asyncsession
+asyncsessionlocal= async_sessionmaker(engine,class_=Asyncsession,expire_on_commit=False)
+expire_on_commit=False 表示 关闭临时数据过期==保存临时会话数据
+
+3.注入函数由会话工厂组成
+async def get_db():
+    async with asyncsessionlocal() as session:
+        yield session  返回给使用session的路由 使用后自动关闭
+
+4.模型类
+创建模型类之前需要导入创建基类Base
+from sqlalchemy.orm import DeclarativeBase
+class Base(Declarativebase):
+    pass
+定义的每一个模型类都需要继承Base类
+
+定义自建表函数
+async def init_db():
+    async with engine.begin() as con:
+        await con.run_sync(Base.metadata.create_all)
+只要继承了基类 使用自建表函数即可自动创建表
+
+lifesponse 自动建表
+
+
+
+
+
+模型类 
+from database import Base
+from sqlalchemy import Integer,String,ForeignKey
+from sqlalchemy.orm import Mapped,mapped_column
+
+class User(Base):
+    __tablename__ ="定义的每个模型类都需要定义表名users"
+    id:Mapped[int] =mapped_column(Integer,primary_key=True,index=True) primary_key=True 主键 index=True 索引,增加查询效率
+    task_id:Mapped[int] =mapped_column(Integer,ForeignKey("tasks.id"))
+     # 外键 关联tasks表的id字段 当数据与关联字段的数据不一致的时候会报错
+     # 关联relationship 后续补充
+    name =
+    age =
+
+需要设置主键 或外键 或关联relationship 后续补充
+
+5.增删改查
+导入Depends注入函数,异步会话类,查询函数select
+!!!!  注入函数Depends只能够在fastapi路由里面使用 
+
+from fastapi import Depends
+@router.get("/get")
+async def get_db(name:str,id:int,session :Asyncsession=Depends(get_db)):#定义一个获取数据库函数
+
+    5.1增
+    原sql语句 insert info users (name,age) values("张三",22)
+    orm语句 
+    users =User(name ="小唐“,age=22)
+    session.add(users)  添加user对象到会话队列
+    session.flush()  刷新会话队列 用于操作多个对象
+    await session.commit()  上传数据库 执行对应的sql语句
+    await session.refresh(user) 拿到更新后的id =u=User.id
+    return {"id":User.id,"name":User.name}
+
+
+    5.2 查
+    session.get(Model,id)
+
+操作    : 查
+ORM 写法: await session.get(Model, id)
+SQL 写法: SELECT * FROM ... WHERE id = ?
+
+操作    : 改
+ORM 写法: obj.field = 新值 → await session.commit()
+SQL 写法: UPDATE ... SET field = 值 WHERE id = ?
+
+操作    : 删
+ORM 写法: await session.delete(obj) → await session.commit()
+SQL 写法: DELETE FROM ... WHERE id = ?
+
+
+"""
 """
 Git 搭配Github
 一、上传、拉取与版本控制
@@ -85,8 +188,7 @@ git push origin v7.4.1 上传的同时上传标签
 
 
 >>>>>>> Stashed changes
-
-6.新环境拉取
+0897654321=- 89605=- ，
 下载Git
 配置Git 
 git config --global user.name
@@ -152,3 +254,16 @@ git log 查看当前版本
  git push
 
 """
+
+
+
+
+
+
+
+"""
+Redis
+
+
+"""
+
